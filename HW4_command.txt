@@ -1,0 +1,48 @@
+### create cluster
+gcloud beta dataproc clusters create hw4-cluster \
+    --optional-components=ANACONDA,JUPYTER \
+    --image-version=1.4 \
+    --enable-component-gateway \
+    --bucket big_data_hw \
+    --project test-project-251000 \
+    --num-workers 3 \
+    --region us-east1 \
+    --metadata 'PIP_PACKAGES=graphframes==0.6 numpy pandas_gbq requests_oauthlib google-cloud-storage google-cloud-bigquery' \
+    --metadata gcs-connector-version=1.9.16 \
+    --metadata bigquery-connector-version=0.13.16 \
+    --initialization-actions gs://dataproc-initialization-actions/python/pip-install.sh,gs://dataproc-initialization-actions/connectors/connectors.sh \
+    --properties spark:spark.jars.packages=graphframes:graphframes:0.6.0-spark2.3-s_2.11
+
+
+### running HTTP client
+gcloud dataproc jobs submit pyspark ./Desktop/Myfile/EECS6893/HW3/twitterHTTPClient.py \
+    --project=test-project-251000 \
+    --region=us-central1 \
+    --cluster=example-cluster
+
+
+bq mk \
+--table \
+test-project-251000:bigdata_sparkStreaming.wordcountwide
+
+
+### install Django
+pip3 install Django==2.2.7
+
+
+### install 
+pip3 install pandas-gbq -U
+
+
+### create project
+cd ./Desktop/Myfile/EECS6893/HW4
+django-admin.py startproject hw4_tutorial
+
+
+### run local server
+cd ./Desktop/Myfile/EECS6893/HW4/hw4_tutorial
+python3 manage.py runserver
+     
+
+
+    
